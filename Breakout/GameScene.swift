@@ -56,8 +56,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         makeBall()
         makePaddle()
         makeBricks()
-        score = 0
-        lives = 3
         updateLabels()
     }
     
@@ -239,6 +237,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         else {
             playLabel.text = "You lose! Tap to play again"
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if abs(ball.physicsBody!.velocity.dx) < 50 {
+            // ball has stalled in x direction, so kick it randomly horizontally
+            ball.physicsBody?.applyImpulse(CGVector(dx: Int.random(in: -3...3), dy: 0))
+        }
+        if abs(ball.physicsBody!.velocity.dy) < 50 {
+            // ball has stalled in y direct, so kick it randomly vertically
+            ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: Int.random(in: -3...3)))
         }
     }
 }
